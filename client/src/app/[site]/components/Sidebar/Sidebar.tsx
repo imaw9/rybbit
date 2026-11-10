@@ -87,7 +87,7 @@ function SidebarContent() {
           />
         </div>
         <SidebarComponents.SectionHeader>{t("Traffic")}</SidebarComponents.SectionHeader>
-        {IS_CLOUD && (
+        {(IS_CLOUD || DEPLOYMENT) && (
           <SidebarComponents.Item
             label={t("Pages")}
             active={isActiveTab("pages")}
@@ -101,7 +101,7 @@ function SidebarContent() {
           href={getTabPath("globe")}
           icon={<Globe2 className="w-4 h-4" />}
         />
-        {IS_CLOUD && (
+        {(IS_CLOUD || DEPLOYMENT) && (
           <SidebarComponents.Item
             label={t("Bots")}
             active={isActiveTab("bots")}
@@ -189,7 +189,7 @@ function SidebarContent() {
           href={getTabPath("errors")}
           icon={<AlertTriangle className="w-4 h-4" />}
         />
-        {IS_CLOUD && !isMobileSite && (
+        {(IS_CLOUD || DEPLOYMENT) && !isMobileSite && (
           <SidebarComponents.Item
             label={t("Performance")}
             active={isActiveTab("performance")}

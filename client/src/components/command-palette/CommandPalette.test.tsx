@@ -8,10 +8,19 @@ import { CommandPaletteTrigger } from "./CommandPaletteTrigger";
 import { usePaletteOverlay } from "./store";
 
 const mocks = vi.hoisted(() => ({
+  deployment: "",
   pathname: "/12/main",
   signedIn: true,
   push: vi.fn(),
   setTheme: vi.fn(),
+}));
+
+vi.mock("@/lib/const", async importOriginal => ({
+  ...(await importOriginal<typeof import("@/lib/const")>()),
+  IS_CLOUD: false,
+  get DEPLOYMENT() {
+    return mocks.deployment;
+  },
 }));
 
 vi.mock("next-intl", () => ({
@@ -129,6 +138,7 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
+  mocks.deployment = "";
   mocks.pathname = "/12/main";
   mocks.signedIn = true;
   vi.stubGlobal(
@@ -165,6 +175,23 @@ afterEach(() => {
 });
 
 describe("CommandPalette", () => {
+  it("opens analytics pages from a configured self-hosted build", async () => {
+    mocks.deployment = "selfhost";
+    render(<CommandPalette />);
+    const dialog = await openPalette();
+    const names = optionNames(dialog);
+
+    expect(names).toContain("Pages, rybbit.com");
+    expect(names).toContain("Bots, rybbit.com");
+    expect(names).toContain("Performance, rybbit.com");
+    expect(names).toContain("Query, rybbit.com");
+    expect(names).toContain("Dashboards, rybbit.com");
+
+    search(dialog, "Pages");
+    fireEvent.click(within(dialog).getByRole("option", { name: "Pages, rybbit.com" }));
+    expect(mocks.push).toHaveBeenCalledWith("/12/pages");
+  });
+
   it("opens with Ctrl+K off Apple platforms and focuses the search", async () => {
     render(<CommandPalette />);
     expect(screen.queryByRole("dialog")).toBeNull();
