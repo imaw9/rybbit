@@ -34,6 +34,10 @@ On success, GitHub Actions publishes the client for `linux/amd64` and
 - `ghcr.io/imaw9/rybbit-client:selfhost` tracks the latest validated `master` build.
 - `ghcr.io/imaw9/rybbit-client:sha-<full-commit-sha>` identifies its source revision.
 
+Each architecture builds on a native GitHub-hosted runner. The final publishing
+job combines both image digests into a multi-platform manifest, so ARM64 builds
+do not depend on QEMU emulation.
+
 You can also run **Docker Publish** manually: choose a pull-request branch for
 validation only, or `master` to validate and publish. No Docker Hub account or
 separate registry secret is required. A newly created GHCR package is private
