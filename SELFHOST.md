@@ -40,6 +40,12 @@ separate registry secret is required. A newly created GHCR package is private
 by default; change its package visibility to public if anonymous pulls are
 wanted, or authenticate Docker to pull a private package.
 
+To validate a pull-request branch manually from the CLI:
+
+```sh
+gh workflow run docker-publish.yml --repo imaw9/rybbit --ref <branch-name>
+```
+
 Publishing does not update the running server. Deploy a reviewed image revision
 or digest explicitly, and retain the previous image reference for rollback.
 
