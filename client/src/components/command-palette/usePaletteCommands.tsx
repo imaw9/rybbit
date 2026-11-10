@@ -132,9 +132,9 @@ export function usePaletteCommands(entityCommands: PaletteCommand[]): {
       ? []
       : [
           { route: "main", label: t("Main"), icon: <LayoutDashboard />, keywords: t("overview dashboard") },
-          { route: "pages", label: t("Pages"), icon: <File />, visible: IS_CLOUD },
+          { route: "pages", label: t("Pages"), icon: <File />, visible: canQuery },
           { route: "globe", label: t("Globe"), icon: <Globe2 />, keywords: t("map") },
-          { route: "bots", label: t("Bots"), icon: <Bot />, visible: IS_CLOUD },
+          { route: "bots", label: t("Bots"), icon: <Bot />, visible: canQuery },
           { route: "sessions", label: t("Sessions"), icon: <Rewind /> },
           { route: "replay", label: t("Replay"), icon: <Video />, keywords: t("recordings"), visible: canReplay },
           { route: "users", label: t("Users"), icon: <User /> },
@@ -149,7 +149,7 @@ export function usePaletteCommands(entityCommands: PaletteCommand[]): {
             label: t("Performance"),
             icon: <Gauge />,
             keywords: t("web vitals"),
-            visible: IS_CLOUD && !isMobileSite,
+            visible: canQuery && !isMobileSite,
           },
           { route: "api-playground", label: t("API Playground"), icon: <Code />, visible: isDesktop },
           { route: "query", label: t("Query"), icon: <Database />, keywords: t("SQL"), visible: canQuery },

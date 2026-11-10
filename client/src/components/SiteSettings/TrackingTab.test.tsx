@@ -5,11 +5,19 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { SiteResponse } from "@/api/admin/endpoints";
 
 const mocks = vi.hoisted(() => ({
+  deployment: "",
   updateSiteConfig: vi.fn(),
   refetch: vi.fn(),
 }));
 
 vi.mock("next-intl", () => ({ useExtracted: () => (message: string) => message }));
+vi.mock("@/lib/const", async importOriginal => ({
+  ...(await importOriginal<typeof import("@/lib/const")>()),
+  IS_CLOUD: false,
+  get DEPLOYMENT() {
+    return mocks.deployment;
+  },
+}));
 vi.mock("@/api/admin/endpoints", () => ({ updateSiteConfig: mocks.updateSiteConfig }));
 vi.mock("@/api/admin/hooks/useSites", () => ({ useGetSitesFromOrg: () => ({ refetch: mocks.refetch }) }));
 vi.mock("@/lib/subscription/useStripeSubscription", () => ({
@@ -29,10 +37,31 @@ function renderTracking(overrides: Partial<SiteResponse> = {}, disabled = false)
 }
 
 beforeEach(() => {
+  mocks.deployment = "";
   vi.clearAllMocks();
   mocks.updateSiteConfig.mockResolvedValue({ success: true });
 });
 afterEach(cleanup);
+
+describe("Self-hosted Web Vitals", () => {
+  it("lets a web site enable performance collection without a cloud subscription", async () => {
+    mocks.deployment = "selfhost";
+    renderTracking({ webVitals: false });
+
+    const toggle = screen.getByRole("switch", { name: "Web Vitals" });
+    fireEvent.click(toggle);
+
+    await waitFor(() => expect(mocks.updateSiteConfig).toHaveBeenCalledWith(17571, { webVitals: true }));
+    await waitFor(() => expect(toggle.getAttribute("aria-checked")).toBe("true"));
+  });
+
+  it("keeps browser performance collection unavailable for mobile sites", () => {
+    mocks.deployment = "selfhost";
+    renderTracking({ type: "mobile" });
+
+    expect(screen.queryByRole("switch", { name: "Web Vitals" })).toBeNull();
+  });
+});
 
 describe("URL fragment tracking setting", () => {
   it("defaults off and saves the site setting when enabled", async () => {

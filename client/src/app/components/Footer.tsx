@@ -13,6 +13,7 @@ interface FooterProps {
 
 export function Footer({ disabled = false }: FooterProps) {
   const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION;
+  const sourceUrl = process.env.NEXT_PUBLIC_SOURCE_URL || "https://github.com/rybbit-io/rybbit";
   const { isWhiteLabel } = useWhiteLabel();
   const t = useExtracted();
   if (disabled || isWhiteLabel) {
@@ -50,7 +51,7 @@ export function Footer({ disabled = false }: FooterProps) {
             {/* Social Media Links */}
             <div className="flex gap-4">
               <a
-                href="https://github.com/rybbit-io/rybbit"
+                href={sourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors"
@@ -107,7 +108,7 @@ export function Footer({ disabled = false }: FooterProps) {
               </li>
               <li>
                 <a
-                  href="https://github.com/rybbit-io/rybbit"
+                  href={sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition-colors"

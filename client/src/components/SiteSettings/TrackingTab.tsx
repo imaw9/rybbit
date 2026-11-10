@@ -12,7 +12,7 @@ import { useGetSitesFromOrg } from "@/api/admin/hooks/useSites";
 import { planIncludesReplay } from "@/lib/subscription/planUtils";
 import { useStripeSubscription } from "@/lib/subscription/useStripeSubscription";
 import { Badge } from "@/components/ui/badge";
-import { IS_CLOUD } from "@/lib/const";
+import { DEPLOYMENT, IS_CLOUD } from "@/lib/const";
 
 import { SettingRow, SettingsSection, SettingsSections } from "./SettingsSection";
 
@@ -128,7 +128,7 @@ export function TrackingTab({
           } as ToggleConfig,
         ]
       : []),
-    ...(IS_CLOUD && !isMobileSite
+    ...((IS_CLOUD || DEPLOYMENT) && !isMobileSite
       ? [
           {
             id: "webVitals",
