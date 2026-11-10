@@ -34,8 +34,9 @@ On success, GitHub Actions publishes the client for `linux/amd64` and
 - `ghcr.io/imaw9/rybbit-client:selfhost` tracks the latest validated `master` build.
 - `ghcr.io/imaw9/rybbit-client:sha-<full-commit-sha>` identifies its source revision.
 
-You can also run **Docker Publish** manually on `master`. No Docker Hub account
-or separate registry secret is required. A newly created GHCR package is private
+You can also run **Docker Publish** manually: choose a pull-request branch for
+validation only, or `master` to validate and publish. No Docker Hub account or
+separate registry secret is required. A newly created GHCR package is private
 by default; change its package visibility to public if anonymous pulls are
 wanted, or authenticate Docker to pull a private package.
 
