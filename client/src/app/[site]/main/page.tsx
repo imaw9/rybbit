@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import { useGetLiveUserCount } from "../../../api/analytics/hooks/useGetLiveUserCount";
 import { useInView } from "../../../hooks/useInView";
 import { useSetPageTitle } from "../../../hooks/useSetPageTitle";
-import { IS_CLOUD, LITE_DASHBOARD } from "../../../lib/const";
+import { DEPLOYMENT, IS_CLOUD, LITE_DASHBOARD } from "../../../lib/const";
 import { useStore } from "../../../lib/store";
 import { SubHeader } from "../components/SubHeader/SubHeader";
 import { MainSection } from "./components/MainSection/MainSection";
@@ -89,7 +89,7 @@ function MainPageContent() {
         <LazySection>
           <Weekdays />
         </LazySection>
-        {IS_CLOUD && (
+        {(IS_CLOUD || DEPLOYMENT === "selfhost") && (
           <LazySection>
             <SearchConsole />
           </LazySection>
