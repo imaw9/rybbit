@@ -34,7 +34,7 @@ import { UsageTab } from "./UsageTab";
 import { useGetSite } from "../../api/admin/hooks/useSites";
 import { useGetSitesFromOrg } from "../../api/admin/hooks/useSites";
 import { SiteResponse, updateSiteConfig } from "../../api/admin/endpoints";
-import { IS_CLOUD } from "../../lib/const";
+import { DEPLOYMENT, IS_CLOUD } from "../../lib/const";
 
 interface SiteSettingsProps {
   siteId: number;
@@ -151,7 +151,7 @@ function SiteSettingsInner({
     { key: "general", label: t("General"), icon: Settings },
     { key: "tracking", label: t("Tracking"), icon: SlidersHorizontal },
     { key: "exclusions", label: t("Exclusions"), icon: Ban },
-    { key: "integrations", label: t("Integrations"), icon: Plug, hidden: !IS_CLOUD },
+    { key: "integrations", label: t("Integrations"), icon: Plug, hidden: !IS_CLOUD && DEPLOYMENT !== "selfhost" },
     { key: "script", label: isMobileSite ? t("React Native SDK") : t("Tracking Script"), icon: Code },
     { key: "widget-embeds", label: t("Widget Embeds"), icon: LayoutTemplate },
     { key: "dashboard-embed", label: t("Dashboard Embed"), icon: LayoutDashboard },
@@ -243,7 +243,7 @@ function SiteSettingsInner({
                 />
               )}
               {activeTab === "exclusions" && <ExclusionsTab siteId={siteMetadata.siteId} disabled={!canConfigure} />}
-              {activeTab === "integrations" && IS_CLOUD && (
+              {activeTab === "integrations" && (IS_CLOUD || DEPLOYMENT === "selfhost") && (
                 <IntegrationsTab disabled={!can("gsc:write")} siteId={siteMetadata.siteId} />
               )}
               {activeTab === "script" && (

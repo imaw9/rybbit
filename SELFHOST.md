@@ -17,6 +17,33 @@ remain unchanged. The backend continues to enforce authentication and site
 access. Navigation does not enable collection: turn Web Vitals on in the site's
 Tracking settings to collect browser performance data.
 
+## Google Search Console
+
+This client exposes Search Console on the main dashboard and the Integrations
+tab in Site Settings. Configure Google OAuth on the backend before connecting a
+site; displaying the integration does not grant access to Google data.
+
+Create a dedicated Google Cloud project, enable the Search Console API, and
+create a Web application OAuth client. Register
+`https://your.domain.com/api/gsc/callback` as its authorized redirect URI. Set
+`GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in the compose project's `.env`.
+The compose file passes these values to the backend and defaults the callback
+URI to `${BASE_URL}/api/gsc/callback`.
+
+For a separately managed backend container, supply these environment variables:
+
+- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`: the OAuth client credentials.
+- `GOOGLE_REDIRECT_URI`: the exact authorized redirect URI.
+- `SERVER_URL` and `CLIENT_URL`: the public Rybbit origin, matching `BASE_URL`, so
+  the backend's OAuth redirects resolve correctly.
+
+Keep the client secret outside git and recreate the backend container after
+updating its environment. In Site Settings > Integrations, connect the Google
+account that has access to the site's Search Console property and select that
+property. The integration requests read-only Search Console access. Each site
+has its own connection; organization and site permissions still control who can
+connect it and read its search data.
+
 The image uses same-origin API requests and disables public signup in the
 client. Keep `DISABLE_SIGNUP=true` on the backend as well. Use the official
 backend image; this workflow only publishes the modified client.
