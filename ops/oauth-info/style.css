@@ -1,0 +1,49 @@
+:root {
+  color-scheme: light dark;
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.6;
+  background: light-dark(#f7f7f7, #141414);
+  color: light-dark(#171717, #fafafa);
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 48rem;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+h2 {
+  margin-top: 2rem;
+  font-size: 1.15rem;
+}
+a {
+  color: light-dark(#065f46, #6ee7b7);
+  text-underline-offset: 0.2em;
+}
+code {
+  overflow-wrap: anywhere;
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 2rem;
+}
+footer {
+  margin-top: 2rem;
+  font-size: 0.875rem;
+}
+.eyebrow {
+  font-weight: 600;
+}
+.action {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
